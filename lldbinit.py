@@ -104,6 +104,21 @@ def terminal_size():
     return w,h
 
 
+RUST_STDLIB_GLOBAL_SRC_MAP=dict()
+RUST_LIBC_MATCHER=re.compile("(/rustc/[0-9a-fA-F]+)/.*")
+RUST_SYSROOT=None
+
+def get_rust_sysroot():
+    global RUST_SYSROOT
+
+    if RUST_SYSROOT is None:
+        popen = subprocess.Popen(["rustc", "--print", "sysroot"],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        o,e = popen.communicate()
+        if popen.returncode == 0:
+            RUST_SYSROOT=o.strip()
+    return RUST_SYSROOT
+
 #
 # User configurable options
 #
@@ -2211,6 +2226,26 @@ def get_frame():
 
     return ret
 
+## Rust stdlib debug symbols point to /rustc/3eeb8d4f2fbae0bb1c587d00b5abeaf938da47f4/... etc
+# for debug symbol. So one has to map them to the right source
+def update_rust_std_sourcemap():
+    global RUST_STDLIB_GLOBAL_SRC_MAP
+    if get_rust_sysroot() is None:
+        return
+
+    source_path = get_frame().GetCompileUnit().GetFileSpec().GetDirectory()
+
+    if source_path is None:
+        return
+    rmatch = RUST_LIBC_MATCHER.match(source_path)
+    if rmatch:
+        prefix=rmatch.group(1)
+        if RUST_STDLIB_GLOBAL_SRC_MAP.get(prefix) is None:
+            RUST_STDLIB_GLOBAL_SRC_MAP[prefix] = get_rust_sysroot().decode("utf-8") + "/lib/rustlib/src/rust"
+            cmd = "settings set target.source-map {} {}".format(prefix,RUST_STDLIB_GLOBAL_SRC_MAP[prefix])
+            res = lldb.SBCommandReturnObject()
+            lldb.debugger.GetCommandInterpreter().HandleCommand(cmd, res)
+
 def get_thread():
     ret = None
     # SBProcess supports thread iteration -> SBThread
@@ -4297,6 +4332,7 @@ def HandleHookStopOnTarget(debugger, command, result, dict):
 
     debugger.SetAsync(True)
 
+
     # when we start the thread is still not valid and get_frame() will always generate a warning
     # this way we avoid displaying it in this particular case
     if get_process().GetNumThreads() == 1:
@@ -4319,7 +4355,7 @@ def HandleHookStopOnTarget(debugger, command, result, dict):
             break
 
     GlobalListOutput = []
-
+    # update_rust_std_sourcemap()
     arch = get_arch()
     if not is_i386() and not is_x64() and not is_arm():
         #this is for ARM probably in the future... when I will need it...

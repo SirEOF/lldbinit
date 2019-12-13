@@ -1,5 +1,8 @@
 settings set stop-disassembly-count 10
 settings set target.source-map /rustc/4560ea788cb760f0a34127156c78e2552949f734 /Users/swami/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/
+
+settings set target.source-map /rustc/3eeb8d4f2fbae0bb1c587d00b5abeaf938da47f4 /Users/swami/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/
+
 set set stop-line-count-before 3
 set set stop-line-count-after 5
 command script import  ~/.lldb/lldbinit.py
