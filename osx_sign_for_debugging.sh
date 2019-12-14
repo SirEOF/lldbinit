@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018-2019 Secure Substrates Inc. All Right Reserved.
+# Copyright (C) 2018-2019 Secure Substrates Inc. All rights reserved.
 # SPDX-License-Identifier: MIT. The file is under the MIT license.
 #
 # Author: Arputha Ganesan (arputha.ganesan@securesubstrates.com)
