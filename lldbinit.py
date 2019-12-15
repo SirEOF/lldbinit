@@ -124,7 +124,7 @@ def get_rust_sysroot():
 #
 CONFIG_ENABLE_COLOR = 1
 CONFIG_DISPLAY_DISASSEMBLY_BYTES = 0
-CONFIG_DISASSEMBLY_LINE_COUNT = 10
+CONFIG_DISASSEMBLY_LINE_COUNT = 5
 CONFIG_USE_CUSTOM_DISASSEMBLY_FORMAT = 1
 CONFIG_DISPLAY_STACK_WINDOW = 0
 CONFIG_DISPLAY_FLOW_WINDOW = 0
@@ -3039,7 +3039,7 @@ def reg64():
     fs = get_gp_register("fs")
 
     color(COLOR_REGNAME)
-    output("  RAX: ")
+    output("  RAX(cr): ")
     if rax == old_rax:
         color(COLOR_REGVAL)
     else:
@@ -3048,7 +3048,7 @@ def reg64():
     old_rax = rax
 
     color(COLOR_REGNAME)
-    output("  RBX: ")
+    output("  RBX(ce): ")
     if rbx == old_rbx:
         color(COLOR_REGVAL)
     else:
@@ -3057,7 +3057,7 @@ def reg64():
     old_rbx = rbx
 
     color(COLOR_REGNAME)
-    output("  RBP: ")
+    output("  RBP(bp): ")
     if rbp == old_rbp:
         color(COLOR_REGVAL)
     else:
@@ -3066,7 +3066,7 @@ def reg64():
     old_rbp = rbp
 
     color(COLOR_REGNAME)
-    output("  RSP: ")
+    output("  RSP(sp): ")
     if rsp == old_rsp:
         color(COLOR_REGVAL)
     else:
@@ -3077,7 +3077,7 @@ def reg64():
     output("\n")
 
     color(COLOR_REGNAME)
-    output("  RDI: ")
+    output("  RDI(#1): ")
     if rdi == old_rdi:
         color(COLOR_REGVAL)
     else:
@@ -3086,7 +3086,7 @@ def reg64():
     old_rdi = rdi
 
     color(COLOR_REGNAME)
-    output("  RSI: ")
+    output("  RSI(#2): ")
     if rsi == old_rsi:
         color(COLOR_REGVAL)
     else:
@@ -3095,7 +3095,7 @@ def reg64():
     old_rsi = rsi
 
     color(COLOR_REGNAME)
-    output("  RDX: ")
+    output("  RDX(#3): ")
     if rdx == old_rdx:
         color(COLOR_REGVAL)
     else:
@@ -3104,7 +3104,7 @@ def reg64():
     old_rdx = rdx
 
     color(COLOR_REGNAME)
-    output("  RCX: ")
+    output("  RCX(#4): ")
     if rcx == old_rcx:
         color(COLOR_REGVAL)
     else:
@@ -3115,16 +3115,7 @@ def reg64():
     output("\n")
 
     color(COLOR_REGNAME)
-    output("  RIP: ")
-    if rip == old_rip:
-        color(COLOR_REGVAL)
-    else:
-        color(COLOR_REGVAL_MODIFIED)
-    output("0x%.016lX" % (rip))
-    old_rip = rip
-
-    color(COLOR_REGNAME)
-    output("  R8:  ")
+    output("  R8(#5):  ")
     if r8 == old_r8:
         color(COLOR_REGVAL)
     else:
@@ -3133,7 +3124,7 @@ def reg64():
     old_r8 = r8
 
     color(COLOR_REGNAME)
-    output("  R9:  ")
+    output("  R9(#6):  ")
     if r9 == old_r9:
         color(COLOR_REGVAL)
     else:
@@ -3142,7 +3133,7 @@ def reg64():
     old_r9 = r9
 
     color(COLOR_REGNAME)
-    output("  R10: ")
+    output("  R10(cr): ")
     if r10 == old_r10:
         color(COLOR_REGVAL)
     else:
@@ -3150,10 +3141,8 @@ def reg64():
     output("0x%.016lX" % (r10))
     old_r10 = r10
 
-    output("\n")
-
     color(COLOR_REGNAME)
-    output("  R11: ")
+    output("  R11(cr): ")
     if r11 == old_r11:
         color(COLOR_REGVAL)
     else:
@@ -3161,8 +3150,10 @@ def reg64():
     output("0x%.016lX" % (r11))
     old_r11 = r11
 
+    output("\n")
+
     color(COLOR_REGNAME)
-    output("  R12: ")
+    output("  R12(cr): ")
     if r12 == old_r12:
         color(COLOR_REGVAL)
     else:
@@ -3171,7 +3162,7 @@ def reg64():
     old_r12 = r12
 
     color(COLOR_REGNAME)
-    output("  R13: ")
+    output("  R13(cr): ")
     if r13 == old_r13:
         color(COLOR_REGVAL)
     else:
@@ -3180,7 +3171,7 @@ def reg64():
     old_r13 = r13
 
     color(COLOR_REGNAME)
-    output("  R14: ")
+    output("  R14(cr): ")
     if r14 == old_r14:
         color(COLOR_REGVAL)
     else:
@@ -3188,10 +3179,20 @@ def reg64():
     output("0x%.016lX" % (r14))
     old_r14 = r14
 
+    color(COLOR_REGNAME)
+    output("  RIP(pc): ")
+    if rip == old_rip:
+        color(COLOR_REGVAL)
+    else:
+        color(COLOR_REGVAL_MODIFIED)
+    output("0x%.016lX" % (rip))
+    old_rip = rip
+
+
     output("\n")
 
     color(COLOR_REGNAME)
-    output("  R15: ")
+    output("  R15(cr): ")
     if r15 == old_r15:
         color(COLOR_REGVAL)
     else:
