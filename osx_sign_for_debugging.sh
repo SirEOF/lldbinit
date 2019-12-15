@@ -54,7 +54,7 @@ codesign_exec( ) {
 	fi
 
 	$CODESIGN -s "$identity" --entitlements "$tmpfile" --timestamp=none "$exec_name"
-	$KEYCHAIN_ASCCESS lock-keychain
+	# $KEYCHAIN_ASCCESS lock-keychain
 	unlink "$tmpfile"
     fi
 }
